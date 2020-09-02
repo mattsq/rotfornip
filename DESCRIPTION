@@ -1,13 +1,12 @@
 Package: rotfornip
-Title: What the Package Does (One Line, Title Case)
+Title: Parsnip Wrappers For Rotation Forest
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Matthew",
+           family = "Simmons",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "matthew.joseph.simmons@gmail.com")
+Description: A parsnip wrapper that adds rotationforest as an engine to rand_forest.
 License: MIT + file LICENSE
 Suggests: 
     testthat
@@ -15,3 +14,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Depends: 
+    parsnip
+Imports: 
+    tibble
