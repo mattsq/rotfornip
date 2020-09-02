@@ -18,43 +18,71 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of rotfornip is to ...
+The goal of rotfornip is to extend parsnip to handle rotationforest models as an engine for rand_forest()
 
 ## Installation
 
-You can install the released version of rotfornip from [CRAN](https://CRAN.R-project.org) with:
+This package isn't on CRAN - and won't be, unless someone submits a rotationforest implementation there that I wrap.
 
-``` r
-install.packages("rotfornip")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+The development version from [GitHub](https://github.com/) can be installed with:
 
 ``` r
 # install.packages("devtools")
+devtools::install_github("mananshah99/rotationforest")
 devtools::install_github("mattsq/rotfornip")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Here's how you'd use it:
 
 ```{r example}
+library(tidymodels)
+library(rotationForest)
 library(rotfornip)
-## basic example code
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+Here we'll use the two_class_dat example model from modeldata
 
 ```{r cars}
-summary(cars)
+#
+ data("two_class_dat", package = "modeldata")
+ set.seed(4622)
+ example_split <- initial_split(two_class_dat, prop = 0.7)
+ example_train <- training(example_split)
+ example_test  <-  testing(example_split)
+ bs_train <- bootstraps(example_train)
+
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+A simple fit/predict example:
 
-You can also embed plots, for example:
+```{r simple}
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+ model <- rand_forest(trees = 100, mtry = 1, mode = "classification") %>%
+   set_engine(engine = "rotationForest")
+ rot_for_fit <- model %>%
+   fit(Class ~ ., data =  example_train)
+ predict(rot_for_fit, new_data = example_train)
+
+```  
+
+A more complex example:
+
+```{r complex}
+
+ recipe_rot <- recipe(Class ~ ., data = example_train) %>%
+   step_normalize(all_predictors())
+ model_grid <- rand_forest(trees = tune(), mtry = tune(), mode = "classification") %>%
+   set_engine(engine = "rotationForest")
+ wf <- workflow() %>%
+   add_recipe(recipe_rot) %>%
+   add_model(model_grid)
+ grid_rot <- grid_random(mtry(range = c(1,2)), trees(), size = 3)
+
+grid_results <- tune_grid(wf, resamples = bs_train, grid = grid_rot)
+
+collect_metrics(grid_results)
+
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
