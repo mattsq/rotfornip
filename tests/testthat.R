@@ -7,7 +7,7 @@ testthat::test_check("rotfornip")
 
  ## TODO Alla this needs to be turned into a test suite!
 # # Testing -----------------------------------------------------------------
-#
+
 # data("two_class_dat", package = "modeldata")
 # set.seed(4622)
 # example_split <- initial_split(two_class_dat, prop = 0.7)

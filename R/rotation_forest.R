@@ -48,7 +48,7 @@ add_rotationforest_engine <- function() {
     value = list(
       interface = "data.frame",
       protect = c("xdf", "ydf"),
-      func = c(pkg = "rotfornip", fun = "rotationForest_train"),
+      func = c(pkg = "rotfornip", fun = "rotationforest_train"),
       defaults = list()
       )
     )
