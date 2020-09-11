@@ -32,6 +32,15 @@ add_rotationforest_engine <- function() {
     has_submodel = FALSE
   )
 
+  parsnip::set_model_arg(
+    model = "rand_forest",
+    eng = "rotationForest",
+    parsnip = "cp",
+    original = "cp",
+    func = list(pkg = "dials", fun = "cp"),
+    has_submodel = FALSE
+  )
+
   parsnip::set_fit(
     model = "rand_forest",
     eng = "rotationForest",
@@ -39,7 +48,7 @@ add_rotationforest_engine <- function() {
     value = list(
       interface = "data.frame",
       protect = c("xdf", "ydf"),
-      func = c(pkg = "rotationForest", fun = "rotationForest"),
+      func = c(pkg = "rotfornip", fun = "rotationForest_train"),
       defaults = list()
       )
     )
@@ -97,6 +106,30 @@ add_rotationforest_engine <- function() {
                               compute_intercept = FALSE,
                               remove_intercept = FALSE))
 
+
+}
+
+#' @importFrom rpart rpart.control
+#' @importFrom rotationForest rotationForest
+#' @importFrom dplyr expr
+rotationforest_train <- function(x, y, npredictor, ntree, verbose, cp = .01, minsplit = 20L, maxdepth = 30L) {
+
+  rotationforest_call <- dplyr::expr(rotationForest::rotationForest(control = NULL))
+  rpart_control_call <- dplyr::expr(rpart::rpart.control(cp = NULL, minsplit = NULL, maxdepth = NULL))
+
+  rotationforest_call$xdf <- x
+  rotationforest_call$ydf <- y
+  rotationforest_call$npredictor <- npredictor
+  rotationforest_call$ntree <- ntree
+  rotationforest_call$verbose <- verbose
+
+  rpart_control_call$cp <- cp
+  rpart_control_call$minsplit <- minsplit
+  rpart_control_call$maxdepth <- maxdepth
+
+  rotationforest_call$control <- rpart_control_call
+
+  return(eval(rotationforest_call))
 
 }
 

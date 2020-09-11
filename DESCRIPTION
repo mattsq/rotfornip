@@ -17,4 +17,7 @@ RoxygenNote: 7.1.1
 Depends: 
     parsnip
 Imports: 
-    tibble
+    tibble,
+    rpart,
+    dplyr,
+    rotationForest
