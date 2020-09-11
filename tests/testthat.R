@@ -5,7 +5,7 @@ testthat::test_check("rotfornip")
 
 
 
- de## TODO Alla this needs to be turned into a test suite!
+ ## TODO Alla this needs to be turned into a test suite!
 # # Testing -----------------------------------------------------------------
 #
 # data("two_class_dat", package = "modeldata")

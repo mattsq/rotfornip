@@ -109,9 +109,14 @@ add_rotationforest_engine <- function() {
 
 }
 
+#' Internal function wrappers
+#'
+#' These are not supported when called by the user.
+#' @keywords internal
 #' @importFrom rpart rpart.control
 #' @importFrom rotationForest rotationForest
 #' @importFrom dplyr expr
+#' @export
 rotationforest_train <- function(x, y, npredictor, ntree, verbose, cp = .01, minsplit = 20L, maxdepth = 30L) {
 
   rotationforest_call <- dplyr::expr(rotationForest::rotationForest(control = NULL))
