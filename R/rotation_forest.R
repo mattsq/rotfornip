@@ -47,7 +47,7 @@ add_rotationforest_engine <- function() {
     mode = "classification",
     value = list(
       interface = "data.frame",
-      protect = c("xdf", "ydf"),
+      protect = c("x", "y"),
       func = c(pkg = "rotfornip", fun = "rotationforest_train"),
       defaults = list()
       )
@@ -117,7 +117,7 @@ add_rotationforest_engine <- function() {
 #' @importFrom rotationForest rotationForest
 #' @importFrom dplyr expr
 #' @export
-rotationforest_train <- function(x, y, npredictor, ntree, verbose, cp = .01, minsplit = 20L, maxdepth = 30L) {
+rotationforest_train <- function(x, y, npredictor, ntree, verbose = FALSE, cp = .01, minsplit = 20L, maxdepth = 30L) {
 
   rotationforest_call <- dplyr::expr(rotationForest::rotationForest(control = NULL))
   rpart_control_call <- dplyr::expr(rpart::rpart.control(cp = NULL, minsplit = NULL, maxdepth = NULL))
